@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WeatherApp</string>
     <string name="cities_list_search_hint">Enter city to search a weather</string>
     <string name="favorites_icon_description">Favorites icon</string>
     <string name="bottom_nav_favorites">Favorites</string>
