@@ -1,6 +1,7 @@
 package com.ponkratov.weatherapp.data.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -13,7 +14,10 @@ interface CityDao {
     suspend fun getCities(): List<CityEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCities(vararg cities: CityEntity)
+    suspend fun insertCity(city: CityEntity)
+
+    @Delete
+    suspend fun deleteCity(city: CityEntity)
 
     @Query("DELETE FROM CityEntity")
     suspend fun clear()

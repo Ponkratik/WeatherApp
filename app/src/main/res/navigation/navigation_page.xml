@@ -7,16 +7,29 @@
     <fragment
         android:id="@+id/fragment_favorites_list"
         android:name="com.ponkratov.weatherapp.presentation.ui.favorites.FavoritesListFragment"
-        tools:layout="@layout/fragment_favorites_list" />
+        tools:layout="@layout/fragment_favorites_list" >
+        <action
+            android:id="@+id/action_fragment_favorites_list_to_fragment_weather_info"
+            app:destination="@id/fragment_weather_info" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_cities_list"
         android:name="com.ponkratov.weatherapp.presentation.ui.findcity.CitiesListFragment"
-        tools:layout="@layout/fragment_cities_list" />
+        tools:layout="@layout/fragment_cities_list" >
+        <action
+            android:id="@+id/action_fragment_cities_list_to_fragment_weather_info"
+            app:destination="@id/fragment_weather_info" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_settings"
         android:name="com.ponkratov.weatherapp.presentation.ui.settings.SettingsFragment"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/fragment_weather_info"
+        android:name="com.ponkratov.weatherapp.presentation.ui.weatherinfo.WeatherInfoFragment"
+        tools:layout="@layout/fragment_weather_info" />
 
 </navigation>

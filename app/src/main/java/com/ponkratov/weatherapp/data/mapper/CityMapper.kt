@@ -4,23 +4,29 @@ import com.ponkratov.weatherapp.data.model.CitiesResponse
 import com.ponkratov.weatherapp.data.model.CityEntity
 import com.ponkratov.weatherapp.domain.model.City
 
-fun CitiesResponse.toDomain(): City {
-    val firstResult = results.first()
-    return City(
-        firstResult.id ?: 0 ,
-        firstResult.name ?: "",
-        firstResult.country ?: "",
-        firstResult.countryCode ?: "",
-        firstResult.latitude ?: 0.0,
-        firstResult.longitude ?: 0.0,
-        firstResult.elevation ?: 0,
-        firstResult.timezone ?: ""
-    )
+fun CitiesResponse.toDomainList(): List<City> {
+    val citiesList = mutableListOf<City>()
+    results.forEach {
+        citiesList.add(
+            City(
+                it.id ?: 0,
+                it.name ?: "",
+                it.country ?: "",
+                it.countryCode ?: "",
+                it.latitude ?: 0.0,
+                it.longitude ?: 0.0,
+                it.elevation ?: 0,
+                it.timezone ?: ""
+            )
+        )
+    }
+
+    return citiesList
 }
 
 fun CityEntity.toDomain(): City {
     return City(
-        id ?: 0 ,
+        id ?: 0,
         name ?: "",
         country ?: "",
         countryCode ?: "",

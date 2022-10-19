@@ -29,7 +29,7 @@ val networkModule = module {
         get<Retrofit>().create<CitiesApi>()
     }
 
-    single {
+    /*single {
         named("RetrofitWeather")
         Retrofit.Builder()
             .baseUrl(BASE_URL_WEATHER)
@@ -41,5 +41,5 @@ val networkModule = module {
     single {
         named("ApiWeather")
         get<Retrofit>().create<WeatherApi>()
-    }
+    }*/
 }
