@@ -12,34 +12,38 @@ import retrofit2.create
 private const val BASE_URL_CITIES = "https://geocoding-api.open-meteo.com/v1/"
 private const val BASE_URL_WEATHER = "https://api.open-meteo.com/v1/"
 
-val networkModule = module {
-    single { OkHttpClient.Builder().build() }
+val citiesNetworkModule = module {
+    single(named("OkHttpClientCities")) {
+        OkHttpClient.Builder().build()
+    }
 
-    single {
-        named("RetrofitCities")
+    single(named("RetrofitCities")) {
         Retrofit.Builder()
             .baseUrl(BASE_URL_CITIES)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(get())
+            .client(get(named("OkHttpClientCities")))
             .build()
     }
 
-    single {
-        named("ApiCities")
-        get<Retrofit>().create<CitiesApi>()
+    single(named("ApiCities")) {
+        get<Retrofit>(named("RetrofitCities")).create<CitiesApi>()
+    }
+}
+
+val weatherNetworkModule = module {
+    single(named("OkHttpClientWeather")) {
+        OkHttpClient.Builder().build()
     }
 
-    /*single {
-        named("RetrofitWeather")
+    single(named("RetrofitWeather")) {
         Retrofit.Builder()
             .baseUrl(BASE_URL_WEATHER)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(get())
+            .client(get(named("OkHttpClientWeather")))
             .build()
     }
 
-    single {
-        named("ApiWeather")
-        get<Retrofit>().create<WeatherApi>()
-    }*/
+    single(named("ApiWeather")) {
+        get<Retrofit>(named("RetrofitWeather")).create<WeatherApi>()
+    }
 }

@@ -4,5 +4,5 @@ import com.ponkratov.weatherapp.domain.model.Weather
 
 interface WeatherRepository {
 
-    suspend fun getWeatherRemote(latitude: Double, longitude: Double): Result<Weather>
+    suspend fun getWeatherRemote(latitude: Double, longitude: Double): Result<List<Weather>>
 }
