@@ -1,6 +1,5 @@
 package com.ponkratov.weatherapp.presentation.ui.findcity
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ponkratov.weatherapp.domain.model.City
@@ -8,7 +7,6 @@ import com.ponkratov.weatherapp.domain.usecase.AddCityToFavoritesUseCase
 import com.ponkratov.weatherapp.domain.usecase.GetCitiesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 

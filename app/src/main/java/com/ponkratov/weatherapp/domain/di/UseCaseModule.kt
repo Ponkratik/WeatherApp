@@ -1,4 +1,4 @@
-package com.ponkratov.weatherapp.data.di
+package com.ponkratov.weatherapp.domain.di
 
 import com.ponkratov.weatherapp.domain.usecase.AddCityToFavoritesUseCase
 import com.ponkratov.weatherapp.domain.usecase.GetCitiesUseCase
