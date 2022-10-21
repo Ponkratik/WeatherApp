@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.ponkratov.weatherapp.R
 import com.ponkratov.weatherapp.databinding.FragmentCitiesListBinding
+import com.ponkratov.weatherapp.domain.model.Lce
 import com.ponkratov.weatherapp.presentation.extension.addVerticalSpace
 import com.ponkratov.weatherapp.presentation.ui.findcity.adapter.CitiesListAdapter
 import com.ponkratov.weatherapp.presentation.ui.weatherinfo.WeatherInfoViewModel
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
@@ -57,18 +58,39 @@ class CitiesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.onViewCreated()
+
         with(binding) {
             citiesRecyclerView.addVerticalSpace()
             citiesRecyclerView.adapter = adapter
+            textSearch.setText("")
 
             textSearch.addTextChangedListener {
                 viewModel.onQueryTextChanged(textSearch.text.toString())
             }
 
             viewModel
+                .lceFlow
+                .onEach {
+                    when (it) {
+                        Lce.Loading -> {
+                            circularProgress.visibility = CircularProgressIndicator.VISIBLE
+                        }
+                        is Lce.Content -> {
+                            circularProgress.visibility = CircularProgressIndicator.GONE
+                            adapter.submitList(it.data)
+                        }
+                        is Lce.Error -> {
+                            Toast.makeText(requireContext(), "Error while loading data", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                .launchIn(viewLifecycleOwner.lifecycleScope)
+
+            /*viewModel
                 .dataFlow
                 .onEach { adapter.submitList(it) }
-                .launchIn(viewLifecycleOwner.lifecycleScope)
+                .launchIn(viewLifecycleOwner.lifecycleScope)*/
         }
     }
 

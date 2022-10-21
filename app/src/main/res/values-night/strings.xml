@@ -6,4 +6,11 @@
     <string name="bottom_nav_search">Find city</string>
     <string name="bottom_nav_settings">Settings</string>
     <string name="weather_temp_divider">/</string>
+    <string name="text_night_mode">Night mode</string>
+    <string name="text_nightmode_on">On</string>
+    <string name="text_nightmode_system">System</string>
+    <string name="text_nightmode_off">Off</string>
+    <string name="text_language">Language</string>
+    <string name="text_language_ru">Русский</string>
+    <string name="text_language_en">English</string>
 </resources>
