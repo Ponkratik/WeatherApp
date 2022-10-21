@@ -4,30 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.ponkratov.weatherapp.R
 import com.ponkratov.weatherapp.databinding.FragmentFavoritesListBinding
-import com.ponkratov.weatherapp.domain.model.Lce
 import com.ponkratov.weatherapp.presentation.extension.addVerticalSpace
-import com.ponkratov.weatherapp.presentation.ui.findcity.CitiesListViewModel
 import com.ponkratov.weatherapp.presentation.ui.findcity.adapter.CitiesListAdapter
 import com.ponkratov.weatherapp.presentation.ui.weatherinfo.WeatherInfoViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesListFragment : Fragment() {
     private var _binding: FragmentFavoritesListBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel by inject<FavoritesListViewModel>()
+    private val viewModel by viewModel<FavoritesListViewModel>()
 
     private val weatherInfoViewModel by sharedViewModel<WeatherInfoViewModel>()
 

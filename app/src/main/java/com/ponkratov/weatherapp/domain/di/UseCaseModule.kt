@@ -11,4 +11,6 @@ val useCaseModule = module {
     singleOf(::GetWeatherUseCase)
     singleOf(::GetFavoritesCitiesUseCase)
     singleOf(::RemoveCityFromFavoritesUseCase)
+    singleOf(::GetThemeCodeUseCase)
+    singleOf(::SetThemeCodeUseCase)
 }

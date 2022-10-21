@@ -19,7 +19,8 @@ class WeatherApp : Application() {
                 weatherNetworkModule,
                 useCaseModule,
                 repositoryModule,
-                databaseModule
+                databaseModule,
+                sharedPrefsModule
             )
         }
     }

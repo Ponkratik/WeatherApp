@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.ponkratov.weatherapp.databinding.FragmentSettingsBinding
-import com.ponkratov.weatherapp.databinding.FragmentWeatherInfoBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = requireNotNull(_binding)
+
+    private val viewModel by viewModel<SettingsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,12 +29,71 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
+            when (viewModel.onInit()) {
+                ThemeCode.THEME_CODE_DAY.themeCode -> {
+                    setTheme(ThemeCode.THEME_CODE_DAY)
+                    radioNightmodeOff.isChecked = true
+                }
+                ThemeCode.THEME_CODE_NIGHT.themeCode -> {
+                    setTheme(ThemeCode.THEME_CODE_NIGHT)
+                    radioNightmodeOn.isChecked = true
+                }
+                else -> {
+                    setTheme(ThemeCode.THEME_CODE_SYSTEM)
+                    radioNightmodeSystem.isChecked = true
+                }
+            }
 
+            radioNightmodeOn.setOnCheckedChangeListener { _, checked ->
+                if (checked) {
+                    viewModel.onNightThemeChecked(ThemeCode.THEME_CODE_NIGHT.themeCode)
+                    setTheme(ThemeCode.THEME_CODE_NIGHT)
+                }
+            }
+
+            radioNightmodeOff.setOnCheckedChangeListener { _, checked ->
+                if (checked) {
+                    viewModel.onDayThemeChecked(ThemeCode.THEME_CODE_DAY.themeCode)
+                    setTheme(ThemeCode.THEME_CODE_DAY)
+                }
+            }
+
+            radioNightmodeSystem.setOnCheckedChangeListener { _, checked ->
+                if (checked) {
+                    viewModel.onSystemThemeChecked(ThemeCode.THEME_CODE_SYSTEM.themeCode)
+                    setTheme(ThemeCode.THEME_CODE_SYSTEM)
+                }
+            }
         }
+    }
+
+    private fun setTheme(themeCode: ThemeCode) {
+        AppCompatDelegate.setDefaultNightMode(
+            when (themeCode) {
+                ThemeCode.THEME_CODE_DAY -> AppCompatDelegate.MODE_NIGHT_NO
+                ThemeCode.THEME_CODE_NIGHT -> AppCompatDelegate.MODE_NIGHT_YES
+                ThemeCode.THEME_CODE_SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            }
+        )
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        /*private const val THEME_CODE_DAY = "day"
+        private const val THEME_CODE_NIGHT = "night"
+        private const val THEME_CODE_SYSTEM = "system"*/
+
+        private enum class ThemeCode(val themeCode: String) {
+            THEME_CODE_DAY("day"),
+            THEME_CODE_NIGHT("night"),
+            THEME_CODE_SYSTEM("system");
+        }
+
+        private const val LANGUAGE_CODE_RU = "ru"
+        private const val LANGUAGE_CODE_EN = "en"
     }
 }

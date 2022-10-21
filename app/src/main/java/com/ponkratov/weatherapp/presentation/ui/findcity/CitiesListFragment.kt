@@ -20,12 +20,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CitiesListFragment : Fragment() {
     private var _binding: FragmentCitiesListBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val viewModel by inject<CitiesListViewModel>()
+    private val viewModel by viewModel<CitiesListViewModel>()
 
     private val weatherInfoViewModel by sharedViewModel<WeatherInfoViewModel>()
 
