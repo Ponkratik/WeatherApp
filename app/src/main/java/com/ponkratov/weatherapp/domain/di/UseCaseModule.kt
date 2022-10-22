@@ -13,4 +13,6 @@ val useCaseModule = module {
     singleOf(::RemoveCityFromFavoritesUseCase)
     singleOf(::GetThemeCodeUseCase)
     singleOf(::SetThemeCodeUseCase)
+    singleOf(::GetLanguageCodeUseCase)
+    singleOf(::SetLanguageCodeUseCase)
 }

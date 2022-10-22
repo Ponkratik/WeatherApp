@@ -1,5 +1,7 @@
 package com.ponkratov.weatherapp
 
+import android.content.Context
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -7,12 +9,33 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.ponkratov.weatherapp.domain.usecase.GetLanguageCodeUseCase
 import com.ponkratov.weatherapp.domain.usecase.GetThemeCodeUseCase
 import org.koin.android.ext.android.inject
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
     private val getThemeCodeUseCase by inject<GetThemeCodeUseCase>()
+
+    private val getLanguageCodeUseCase by inject<GetLanguageCodeUseCase>()
+
+    override fun attachBaseContext(newBase: Context) {
+
+        val locale = when (getLanguageCodeUseCase()) {
+            "ru" -> Locale("ru")
+            else -> Locale.US
+        }
+
+        val localizedContext = newBase.createConfigurationContext(
+            Configuration(newBase.resources.configuration)
+                .apply {
+                    setLocale(locale)
+                }
+        )
+
+        super.attachBaseContext(localizedContext)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

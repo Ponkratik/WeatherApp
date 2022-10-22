@@ -14,4 +14,11 @@
     <string name="text_language">Language</string>
     <string name="text_language_ru">Русский</string>
     <string name="text_language_en">English</string>
+    <string name="day_monday">Monday</string>
+    <string name="day_tuesday">Tuesday</string>
+    <string name="day_wednesday">Wednesday</string>
+    <string name="day_thursday">Thursday</string>
+    <string name="day_friday">Friday</string>
+    <string name="day_saturday">Saturday</string>
+    <string name="day_sunday">Sunday</string>
 </resources>

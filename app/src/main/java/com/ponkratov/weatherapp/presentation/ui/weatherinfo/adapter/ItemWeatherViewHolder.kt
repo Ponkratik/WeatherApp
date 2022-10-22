@@ -1,6 +1,8 @@
 package com.ponkratov.weatherapp.presentation.ui.weatherinfo.adapter
 
+import android.provider.Settings.Global.getString
 import androidx.recyclerview.widget.RecyclerView
+import com.ponkratov.weatherapp.R
 import com.ponkratov.weatherapp.databinding.ItemCityBinding
 import com.ponkratov.weatherapp.databinding.ItemWeatherBinding
 import com.ponkratov.weatherapp.domain.model.City
@@ -20,13 +22,13 @@ class ItemWeatherViewHolder(
             val c = Calendar.getInstance()
             c.time = requireNotNull(SimpleDateFormat("yyyy-MM-dd").parse(item.date))
             textviewDayOfWeek.text = when (c.get(Calendar.DAY_OF_WEEK)) {
-                2 -> "Monday"
-                3 -> "Tuesday"
-                4 -> "Wednesday"
-                5 -> "Thursday"
-                6 -> "Friday"
-                7 -> "Saturday"
-                1 -> "Sunday"
+                2 -> binding.root.context.getString(R.string.day_monday)
+                3 -> binding.root.context.getString(R.string.day_tuesday)
+                4 -> binding.root.context.getString(R.string.day_wednesday)
+                5 -> binding.root.context.getString(R.string.day_thursday)
+                6 -> binding.root.context.getString(R.string.day_friday)
+                7 -> binding.root.context.getString(R.string.day_saturday)
+                1 -> binding.root.context.getString(R.string.day_sunday)
                 else -> "Incorrect"
             }
 

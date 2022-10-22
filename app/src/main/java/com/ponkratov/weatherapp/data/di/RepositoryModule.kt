@@ -23,6 +23,6 @@ val repositoryModule = module {
     } bind WeatherRepository::class
 
     single {
-        SharedPrefsRepositoryImpl(get())
+        SharedPrefsRepositoryImpl(get(), get())
     } bind SharedPrefsRepository::class
 }
