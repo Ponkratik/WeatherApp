@@ -32,4 +32,13 @@
         android:name="com.ponkratov.weatherapp.presentation.ui.weatherinfo.WeatherInfoFragment"
         tools:layout="@layout/fragment_weather_info" />
 
+    <fragment
+        android:id="@+id/fragment_map"
+        android:name="com.ponkratov.weatherapp.presentation.ui.map.MapFragment"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_fragment_map_to_fragment_weather_info"
+            app:destination="@id/fragment_weather_info" />
+    </fragment>
+
 </navigation>

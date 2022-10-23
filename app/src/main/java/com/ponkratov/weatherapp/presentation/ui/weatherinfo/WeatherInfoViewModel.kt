@@ -13,17 +13,6 @@ class WeatherInfoViewModel(
     private val getWeatherUseCase: GetWeatherUseCase
 ) : ViewModel() {
 
-    var _city: City = City(
-        2950159,
-        "Berlin",
-        "Germany",
-        "DE",
-        52.52437,
-        13.41053,
-        74,
-        "Europe/Berlin"
-    )
-
     val cityFlow = MutableStateFlow(City(
         2950159,
         "Berlin",

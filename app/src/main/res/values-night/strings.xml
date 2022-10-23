@@ -13,4 +13,5 @@
     <string name="text_language">Language</string>
     <string name="text_language_ru">Русский</string>
     <string name="text_language_en">English</string>
+    <string name="bottom_nav_map">Map</string>
 </resources>

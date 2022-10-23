@@ -15,4 +15,9 @@
         android:icon="@drawable/ic_settings"
         android:title="@string/bottom_nav_settings" />
 
+    <item
+        android:id="@+id/fragment_map"
+        android:icon="@drawable/ic_map"
+        android:title="@string/bottom_nav_map" />
+
 </menu>
