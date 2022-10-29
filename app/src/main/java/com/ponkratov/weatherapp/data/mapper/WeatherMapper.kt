@@ -6,14 +6,10 @@ import com.ponkratov.weatherapp.domain.model.Weather
 fun WeatherResponse.toDomainList(): List<Weather> {
     val weatherList = mutableListOf<Weather>()
 
-    hourly.time = hourly.time.map {
-        it.split("T")[0]
-    }
-
     val maxTempMap =
-        findMaxTempPerDays(hourly.time, hourly.temperature2m)
+        findTempPerDays(hourly.time, hourly.temperature2m, true)
     val minTempMap =
-        findMinTempPerDays(hourly.time, hourly.temperature2m)
+        findTempPerDays(hourly.time, hourly.temperature2m, false)
     val weatherCodeMap =
         findWeatherCodePerDays(hourly.time, hourly.weatherCode)
 
@@ -23,7 +19,7 @@ fun WeatherResponse.toDomainList(): List<Weather> {
                 date,
                 "${minTempMap[date]} ${hourlyUnits.temperature2m}",
                 "$maxTemp ${hourlyUnits.temperature2m}",
-                weatherCodeMap[date] ?: 100
+                weatherCodeMap[date] ?: DEFAULT_WEATHER_CODE
             )
         )
     }
@@ -31,31 +27,20 @@ fun WeatherResponse.toDomainList(): List<Weather> {
     return weatherList
 }
 
-private fun findMaxTempPerDays(
+private fun findTempPerDays(
     times: List<String>,
-    temperatures: List<Double>
+    temperatures: List<Double>,
+    findMax: Boolean
 ): Map<String, Double> {
     val resultMap: MutableMap<String, Double> = mutableMapOf()
 
-    for (i in 0..6) {
-        val day = times[24 * i]
-        val maxTemp = temperatures.subList(24 * i, 24 * (i + 1) - 1).max()
-        resultMap[day] = maxTemp
-    }
-
-    return resultMap
-}
-
-private fun findMinTempPerDays(
-    times: List<String>,
-    temperatures: List<Double>
-): Map<String, Double> {
-    val resultMap: MutableMap<String, Double> = mutableMapOf()
-
-    for (i in 0..6) {
-        val day = times[24 * i]
-        val minTemp = temperatures.subList(24 * i, 24 * (i + 1) - 1).min()
-        resultMap[day] = minTemp
+    for (i in 0 until DAYS_IN_WEEK) {
+        val day = times[HOURS_PER_DAY * i].split("T").first()
+        resultMap[day] = if (findMax) {
+            temperatures.subList(HOURS_PER_DAY * i, HOURS_PER_DAY * (i + 1) - 1).max()
+        } else {
+            temperatures.subList(HOURS_PER_DAY * i, HOURS_PER_DAY * (i + 1) - 1).min()
+        }
     }
 
     return resultMap
@@ -64,11 +49,15 @@ private fun findMinTempPerDays(
 private fun findWeatherCodePerDays(times: List<String>, weatherCodes: List<Int>): Map<String, Int> {
     val resultMap: MutableMap<String, Int> = mutableMapOf()
 
-    for (i in 0..6) {
-        val day = times[24 * i]
-        val tempCode = weatherCodes.subList(24 * i, 24 * (i + 1) - 1)[12]
+    for (i in 0 until DAYS_IN_WEEK) {
+        val day = times[HOURS_PER_DAY * i].split("T").first()
+        val tempCode = weatherCodes.subList(HOURS_PER_DAY * i, HOURS_PER_DAY * (i + 1) - 1)[HOURS_PER_DAY / 2]
         resultMap[day] = tempCode
     }
 
     return resultMap
 }
+
+private const val HOURS_PER_DAY = 24
+private const val DAYS_IN_WEEK = 7
+private const val DEFAULT_WEATHER_CODE = 100

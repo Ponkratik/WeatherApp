@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class HourlyUnits(
 
-    @SerializedName("time") var time: String,
-    @SerializedName("temperature_2m") var temperature2m: String,
-    @SerializedName("weathercode") var weatherCode: String
+    @SerializedName("time") val time: String,
+    @SerializedName("temperature_2m") val temperature2m: String,
+    @SerializedName("weathercode") val weatherCode: String
 )

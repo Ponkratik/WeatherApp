@@ -7,13 +7,13 @@ import androidx.room.PrimaryKey
 @Entity
 data class CityEntity(
     @PrimaryKey
-    var id: Long,
-    var name: String,
-    var country: String,
+    val id: Long,
+    val name: String,
+    val country: String,
     @ColumnInfo(name = "country_code")
-    var countryCode: String,
-    var latitude: Double,
-    var longitude: Double,
-    var elevation: Long,
-    var timezone: String
+    val countryCode: String,
+    val latitude: Double,
+    val longitude: Double,
+    val elevation: Long,
+    val timezone: String
 )
