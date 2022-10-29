@@ -9,14 +9,14 @@ fun CitiesResponse.toDomainList(): List<City> {
     results.forEach {
         citiesList.add(
             City(
-                it.id ?: 0,
-                it.name ?: "",
-                it.country ?: "",
-                it.countryCode ?: "",
-                it.latitude ?: 0.0,
-                it.longitude ?: 0.0,
-                it.elevation ?: 0,
-                it.timezone ?: ""
+                it.id,
+                it.name,
+                it.country,
+                it.countryCode,
+                it.latitude,
+                it.longitude,
+                it.elevation,
+                it.timezone
             )
         )
     }
@@ -26,14 +26,14 @@ fun CitiesResponse.toDomainList(): List<City> {
 
 fun CityEntity.toDomain(): City {
     return City(
-        id ?: 0,
-        name ?: "",
-        country ?: "",
-        countryCode ?: "",
-        latitude ?: 0.0,
-        longitude ?: 0.0,
-        elevation ?: 0,
-        timezone ?: ""
+        id,
+        name,
+        country,
+        countryCode,
+        latitude,
+        longitude,
+        elevation,
+        timezone
     )
 }
 
