@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -51,8 +52,8 @@ class MainActivity : AppCompatActivity() {
 
         nestedController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.fragment_weather_info -> navView.visibility = View.GONE
-                else -> navView.visibility = View.VISIBLE
+                R.id.fragment_weather_info -> navView.isVisible = false
+                else -> navView.isVisible = true
             }
         }
     }

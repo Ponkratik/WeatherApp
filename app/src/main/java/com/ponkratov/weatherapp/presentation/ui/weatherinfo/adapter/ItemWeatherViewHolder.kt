@@ -20,7 +20,7 @@ class ItemWeatherViewHolder(
     fun bind(item: Weather) {
         with(binding) {
             val c = Calendar.getInstance()
-            c.time = requireNotNull(SimpleDateFormat("yyyy-MM-dd").parse(item.date))
+            c.time = requireNotNull(SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(item.date))
             textviewDayOfWeek.text = when (c.get(Calendar.DAY_OF_WEEK)) {
                 2 -> binding.root.context.getString(R.string.day_monday)
                 3 -> binding.root.context.getString(R.string.day_tuesday)
@@ -32,7 +32,7 @@ class ItemWeatherViewHolder(
                 else -> "Incorrect"
             }
 
-            textviewTempCode.text = item.weatherCode.toString()
+            //textviewTempCode.text = item.weatherCode.toString()
             textviewMaxTemp.text = item.maxTemp
             textviewMinTemp.text = item.minTemp
         }

@@ -17,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.LocationSource
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ktx.addMarker
@@ -84,21 +85,11 @@ class MapFragment: Fragment() {
         binding.fragmentMap.getMapAsync { map ->
             googleMap = map.apply {
 
+                initMapStyle()
+
                 uiSettings.isCompassEnabled = true
                 uiSettings.isZoomControlsEnabled = true
                 uiSettings.isMyLocationButtonEnabled = true
-
-                /*viewModel
-                    .lceFlow
-                    .onEach {
-                        it.forEach { city ->
-                            googleMap?.awaitMapLoad()
-                            googleMap?.addMarker(MarkerOptions()
-                                .draggable(false)
-                                .position(LatLng(city.latitude, city.longitude)))
-                        }
-                    }
-                    .launchIn(viewLifecycleOwner.lifecycleScope)*/
 
                 isMyLocationEnabled = hasLocationPermission()
 
@@ -113,6 +104,8 @@ class MapFragment: Fragment() {
                 })
             }
         }
+
+        binding.fragmentMap.onCreate(savedInstanceState)
 
         viewModel.databaseFlow.tryEmit(Unit)
 
@@ -137,10 +130,6 @@ class MapFragment: Fragment() {
                 }
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
-
-        with(binding) {
-            binding.fragmentMap.onCreate(savedInstanceState)
-        }
     }
 
     override fun onResume() {
@@ -183,6 +172,14 @@ class MapFragment: Fragment() {
             requireContext(),
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun GoogleMap.initMapStyle() {
+        if (viewModel.isNightMode()) {
+            setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style_json)
+            )
+        }
     }
 
     companion object {

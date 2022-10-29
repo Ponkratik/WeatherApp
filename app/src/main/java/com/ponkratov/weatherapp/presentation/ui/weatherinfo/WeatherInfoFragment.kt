@@ -50,7 +50,9 @@ class WeatherInfoFragment : Fragment() {
                 .dataFlow
                 .onEach {
                     adapter.submitList(it)
-                    textviewCurrentTemperature.text = it.first().maxTemp
+                    val curTemp = (it.first().maxTemp.split(" ")[0].toDouble() +
+                    it.first().minTemp.split(" ")[0].toDouble()) / 2.0
+                    textviewCurrentTemperature.text = curTemp.toString()
                 }
                 .launchIn(viewLifecycleOwner.lifecycleScope)
         }

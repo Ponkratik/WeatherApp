@@ -11,6 +11,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -34,10 +35,9 @@ class LocationService(context: Context) {
             }
         }
 
-        val request = LocationRequest.create().apply {
-            interval = LOCATION_UPDATE_INTERVAL
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
+        val request = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY, LOCATION_UPDATE_INTERVAL
+        ).build()
 
         locationClient.requestLocationUpdates(request, callback, Looper.getMainLooper())
 

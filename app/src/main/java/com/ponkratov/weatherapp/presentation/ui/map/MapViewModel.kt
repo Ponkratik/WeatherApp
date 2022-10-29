@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ponkratov.weatherapp.domain.model.City
 import com.ponkratov.weatherapp.domain.usecase.GetFavoritesCitiesUseCase
+import com.ponkratov.weatherapp.domain.usecase.GetThemeCodeUseCase
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 
 class MapViewModel(
-    private val getFavoritesCitiesUseCase: GetFavoritesCitiesUseCase
+    private val getFavoritesCitiesUseCase: GetFavoritesCitiesUseCase,
+    private val getThemeCodeUseCase: GetThemeCodeUseCase
 ): ViewModel() {
 
     val databaseFlow = MutableSharedFlow<Unit>(
@@ -29,5 +31,9 @@ class MapViewModel(
             .map {
                 getFavoritesCitiesUseCase()
             }
+    }
+
+    fun isNightMode(): Boolean {
+        return getThemeCodeUseCase() == "night"
     }
 }

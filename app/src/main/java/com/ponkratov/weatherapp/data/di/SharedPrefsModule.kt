@@ -11,7 +11,7 @@ import org.koin.dsl.module
 
 val sharedPrefsModule = module {
     single {
-        provideSharedPref(androidApplication())
+        provideSharedPref(get())
     }
 
     singleOf(::DarkModeSharedPrefs)
@@ -25,5 +25,5 @@ fun provideSharedPref(app: Application): SharedPreferences {
     )
 }
 
-const val SHARED_PREFERENCE_NAME = "weather_app_shared_prefs"
+private const val SHARED_PREFERENCE_NAME = "weather_app_shared_prefs"
 
