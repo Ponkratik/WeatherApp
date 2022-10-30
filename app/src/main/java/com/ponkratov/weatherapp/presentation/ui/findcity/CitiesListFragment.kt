@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.ponkratov.weatherapp.R
 import com.ponkratov.weatherapp.databinding.FragmentCitiesListBinding
 import com.ponkratov.weatherapp.domain.model.Lce
@@ -18,7 +18,6 @@ import com.ponkratov.weatherapp.presentation.ui.findcity.adapter.CitiesListAdapt
 import com.ponkratov.weatherapp.presentation.ui.weatherinfo.WeatherInfoViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -59,8 +58,6 @@ class CitiesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.onViewCreated()
-
         with(binding) {
             citiesRecyclerView.addVerticalSpace()
             citiesRecyclerView.adapter = adapter
@@ -75,23 +72,19 @@ class CitiesListFragment : Fragment() {
                 .onEach {
                     when (it) {
                         Lce.Loading -> {
-                            circularProgress.visibility = CircularProgressIndicator.VISIBLE
+                            circularProgress.isVisible = true
                         }
                         is Lce.Content -> {
-                            circularProgress.visibility = CircularProgressIndicator.GONE
+                            circularProgress.isVisible = false
                             adapter.submitList(it.data)
                         }
                         is Lce.Error -> {
-                            Toast.makeText(requireContext(), "Error while loading data", Toast.LENGTH_SHORT).show()
+                            circularProgress.isVisible = false
+                            Toast.makeText(requireContext(), getString(R.string.error_loading_text), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
                 .launchIn(viewLifecycleOwner.lifecycleScope)
-
-            /*viewModel
-                .dataFlow
-                .onEach { adapter.submitList(it) }
-                .launchIn(viewLifecycleOwner.lifecycleScope)*/
         }
     }
 

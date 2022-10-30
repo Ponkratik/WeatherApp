@@ -2,18 +2,17 @@ package com.ponkratov.weatherapp
 
 import android.content.Context
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.ponkratov.weatherapp.domain.model.settings.ThemeCode
 import com.ponkratov.weatherapp.domain.usecase.GetLanguageCodeUseCase
 import com.ponkratov.weatherapp.domain.usecase.GetThemeCodeUseCase
 import org.koin.android.ext.android.inject
-import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,15 +22,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
 
-        val locale = when (getLanguageCodeUseCase()) {
-            "ru" -> Locale("ru")
-            else -> Locale.US
-        }
+        val locale = getLanguageCodeUseCase()
 
         val localizedContext = newBase.createConfigurationContext(
             Configuration(newBase.resources.configuration)
                 .apply {
-                    setLocale(locale)
+                    setLocale(locale.languageCode)
                 }
         )
 
@@ -58,11 +54,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setTheme(themeCode: String) {
+    private fun setTheme(themeCode: ThemeCode) {
         AppCompatDelegate.setDefaultNightMode(
             when (themeCode) {
-                "day" -> AppCompatDelegate.MODE_NIGHT_NO
-                "night" -> AppCompatDelegate.MODE_NIGHT_YES
+                ThemeCode.THEME_CODE_DAY -> AppCompatDelegate.MODE_NIGHT_NO
+                ThemeCode.THEME_CODE_NIGHT -> AppCompatDelegate.MODE_NIGHT_YES
                 else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             }
         )

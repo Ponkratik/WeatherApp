@@ -20,27 +20,12 @@ class CitiesListViewModel(
         replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
-    /*var lceFlow = flow<Lce<List<City>>> {
-        emit(Lce.Loading)
-        networkFlow(queryFlow.value)
-
-    }*/
-
-    private var queryFlow = MutableStateFlow("")
+    private val queryFlow = MutableStateFlow("")
 
     val lceFlow = queryFlow
         .map {
             Lce.Loading
         }
-        .flatMapLatest { networkFlow1(queryFlow.value) }
-        .shareIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            replay = 1
-        )
-
-
-    val dataFlow = queryFlow
         .flatMapLatest { networkFlow(queryFlow.value) }
         .shareIn(
             scope = viewModelScope,
@@ -48,30 +33,21 @@ class CitiesListViewModel(
             replay = 1
         )
 
-    private fun networkFlow(query: String): Flow<List<City>> {
-        return networkFlow
-            .onStart { emit(Unit) }
-            .map {
-                getCitiesUseCase(query)
-                    .fold(
-                        onSuccess = { it },
-                        onFailure = { emptyList() }
-                    )
-            }
+    init {
+        queryFlow.tryEmit("")
     }
 
-    private fun networkFlow1(query: String): Flow<Lce<List<City>>> {
+    private fun networkFlow(query: String): Flow<Lce<List<City>>> {
         return networkFlow
             .onStart { emit(Unit) }
             .map {
                 getCitiesUseCase(query)
                     .fold(
                         onSuccess = { Lce.Content(it) },
-                        onFailure = { Lce.Error(Throwable("No data")) }
+                        onFailure = { Lce.Error(Throwable("")) }
                     )
             }
     }
-
 
     fun onQueryTextChanged(query: String) {
         queryFlow.tryEmit(query)
@@ -82,9 +58,5 @@ class CitiesListViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             addCityToFavoritesUseCase(item)
         }
-    }
-
-    fun onViewCreated() {
-        queryFlow.tryEmit("")
     }
 }

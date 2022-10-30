@@ -1,6 +1,8 @@
 package com.ponkratov.weatherapp.presentation.ui.settings
 
 import androidx.lifecycle.ViewModel
+import com.ponkratov.weatherapp.domain.model.settings.LanguageCode
+import com.ponkratov.weatherapp.domain.model.settings.ThemeCode
 import com.ponkratov.weatherapp.domain.usecase.GetLanguageCodeUseCase
 import com.ponkratov.weatherapp.domain.usecase.GetThemeCodeUseCase
 import com.ponkratov.weatherapp.domain.usecase.SetLanguageCodeUseCase
@@ -13,9 +15,9 @@ class SettingsViewModel(
     private val setLanguageCodeUseCase: SetLanguageCodeUseCase
 ): ViewModel() {
 
-    fun onInitGetTheme(): String = getThemeCodeUseCase()
-    fun onInitGetLanguage(): String = getLanguageCodeUseCase()
+    fun onInitGetTheme(): ThemeCode = getThemeCodeUseCase()
+    fun onInitGetLanguage(): LanguageCode = getLanguageCodeUseCase()
 
-    fun onThemeChecked(themeCode: String) = setThemeCodeUseCase(themeCode)
-    fun onLanguageChecked(languageCode: String) = setLanguageCodeUseCase(languageCode)
+    fun onThemeChecked(themeCode: ThemeCode) = setThemeCodeUseCase(themeCode)
+    fun onLanguageChecked(languageCode: LanguageCode) = setLanguageCodeUseCase(languageCode)
 }

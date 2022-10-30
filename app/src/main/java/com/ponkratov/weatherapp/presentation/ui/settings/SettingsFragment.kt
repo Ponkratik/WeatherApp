@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.ponkratov.weatherapp.databinding.FragmentSettingsBinding
+import com.ponkratov.weatherapp.domain.model.settings.LanguageCode
+import com.ponkratov.weatherapp.domain.model.settings.ThemeCode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
@@ -30,10 +32,10 @@ class SettingsFragment : Fragment() {
 
         with(binding) {
             when (viewModel.onInitGetTheme()) {
-                ThemeCode.THEME_CODE_DAY.themeCode -> {
+                ThemeCode.THEME_CODE_DAY -> {
                     radioNightmodeOff.isChecked = true
                 }
-                ThemeCode.THEME_CODE_NIGHT.themeCode -> {
+                ThemeCode.THEME_CODE_NIGHT -> {
                     radioNightmodeOn.isChecked = true
                 }
                 else -> {
@@ -42,7 +44,7 @@ class SettingsFragment : Fragment() {
             }
 
             when (viewModel.onInitGetLanguage()) {
-                LanguageCode.LANGUAGE_CODE_RU.languageCode -> {
+                LanguageCode.LANGUAGE_CODE_RU -> {
                     radioLanguageRu.isChecked = true
                 }
                 else -> {
@@ -52,35 +54,35 @@ class SettingsFragment : Fragment() {
 
             radioNightmodeOn.setOnCheckedChangeListener { _, checked ->
                 if (checked) {
-                    viewModel.onThemeChecked(ThemeCode.THEME_CODE_NIGHT.themeCode)
+                    viewModel.onThemeChecked(ThemeCode.THEME_CODE_NIGHT)
                     setTheme(ThemeCode.THEME_CODE_NIGHT)
                 }
             }
 
             radioNightmodeOff.setOnCheckedChangeListener { _, checked ->
                 if (checked) {
-                    viewModel.onThemeChecked(ThemeCode.THEME_CODE_DAY.themeCode)
+                    viewModel.onThemeChecked(ThemeCode.THEME_CODE_DAY)
                     setTheme(ThemeCode.THEME_CODE_DAY)
                 }
             }
 
             radioNightmodeSystem.setOnCheckedChangeListener { _, checked ->
                 if (checked) {
-                    viewModel.onThemeChecked(ThemeCode.THEME_CODE_SYSTEM.themeCode)
+                    viewModel.onThemeChecked(ThemeCode.THEME_CODE_SYSTEM)
                     setTheme(ThemeCode.THEME_CODE_SYSTEM)
                 }
             }
 
             radioLanguageEn.setOnCheckedChangeListener { _, checked ->
                 if (checked) {
-                    viewModel.onLanguageChecked(LanguageCode.LANGUAGE_CODE_EN.languageCode)
+                    viewModel.onLanguageChecked(LanguageCode.LANGUAGE_CODE_EN)
                     changeLanguage()
                 }
             }
 
             radioLanguageRu.setOnCheckedChangeListener { _, checked ->
                 if (checked) {
-                    viewModel.onLanguageChecked(LanguageCode.LANGUAGE_CODE_RU.languageCode)
+                    viewModel.onLanguageChecked(LanguageCode.LANGUAGE_CODE_RU)
                     changeLanguage()
                 }
             }
@@ -104,18 +106,5 @@ class SettingsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private enum class ThemeCode(val themeCode: String) {
-            THEME_CODE_DAY("day"),
-            THEME_CODE_NIGHT("night"),
-            THEME_CODE_SYSTEM("system");
-        }
-
-        private enum class LanguageCode(val languageCode: String) {
-            LANGUAGE_CODE_EN("en"),
-            LANGUAGE_CODE_RU("ru")
-        }
     }
 }

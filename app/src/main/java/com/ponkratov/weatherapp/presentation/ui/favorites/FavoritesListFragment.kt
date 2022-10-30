@@ -53,8 +53,6 @@ class FavoritesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.onViewCreated()
-
         with(binding) {
             favoritesRecyclerView.addVerticalSpace()
             favoritesRecyclerView.adapter = adapter

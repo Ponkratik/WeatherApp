@@ -3,6 +3,7 @@ package com.ponkratov.weatherapp.presentation.ui.map
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ponkratov.weatherapp.domain.model.City
+import com.ponkratov.weatherapp.domain.model.settings.ThemeCode
 import com.ponkratov.weatherapp.domain.usecase.GetFavoritesCitiesUseCase
 import com.ponkratov.weatherapp.domain.usecase.GetThemeCodeUseCase
 import kotlinx.coroutines.channels.BufferOverflow
@@ -34,6 +35,6 @@ class MapViewModel(
     }
 
     fun isNightMode(): Boolean {
-        return getThemeCodeUseCase() == "night"
+        return getThemeCodeUseCase() == ThemeCode.THEME_CODE_NIGHT
     }
 }

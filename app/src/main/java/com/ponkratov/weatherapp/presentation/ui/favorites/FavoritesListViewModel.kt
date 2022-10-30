@@ -29,6 +29,10 @@ class FavoritesListViewModel(
             replay = 1
         )
 
+    init {
+        databaseFlow.tryEmit(Unit)
+    }
+
     private fun databaseFlow(query: String): Flow<List<City>> {
         return databaseFlow
             .onStart { emit(Unit) }
@@ -47,9 +51,5 @@ class FavoritesListViewModel(
 
     fun onQueryTextChanged(query: String) {
         queryFlow.tryEmit(query)
-    }
-
-    fun onViewCreated() {
-        databaseFlow.tryEmit(Unit)
     }
 }

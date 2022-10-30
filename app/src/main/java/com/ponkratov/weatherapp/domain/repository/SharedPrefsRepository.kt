@@ -1,12 +1,15 @@
 package com.ponkratov.weatherapp.domain.repository
 
+import com.ponkratov.weatherapp.domain.model.settings.LanguageCode
+import com.ponkratov.weatherapp.domain.model.settings.ThemeCode
+
 interface SharedPrefsRepository {
 
-    fun getThemeStyle(): String
+    fun getThemeStyle(): ThemeCode
 
-    fun setThemeStyle(themeCode: String)
+    fun setThemeStyle(themeCode: ThemeCode)
 
-    fun getLanguage(): String
+    fun getLanguage(): LanguageCode
 
-    fun setLanguage(languageCode: String)
+    fun setLanguage(languageCode: LanguageCode)
 }
