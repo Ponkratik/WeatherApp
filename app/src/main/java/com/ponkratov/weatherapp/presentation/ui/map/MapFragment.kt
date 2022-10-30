@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.ponkratov.weatherapp.R
+import com.ponkratov.weatherapp.data.service.LocationService
 import com.ponkratov.weatherapp.databinding.FragmentMapBinding
 import com.ponkratov.weatherapp.domain.model.City
 import kotlinx.coroutines.flow.launchIn
@@ -27,7 +28,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MapFragment: Fragment() {
+class MapFragment : Fragment() {
 
     private var _binding: FragmentMapBinding? = null
     private val binding get() = requireNotNull(_binding)
@@ -35,25 +36,12 @@ class MapFragment: Fragment() {
     private var googleMap: GoogleMap? = null
     private var locationListener: LocationSource.OnLocationChangedListener? = null
 
-    private val locationService by lazy {
-        LocationService(requireContext())
-    }
-
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isEnabled ->
         setLocationEnabled(isEnabled)
         if (isEnabled) {
-            viewLifecycleOwner.lifecycleScope.launch {
-                locationService.getLocation()?.let(::moveCameraToLocation)
-            }
-
-            locationService
-                .locationFlow
-                .onEach { location ->
-                    locationListener?.onLocationChanged(location)
-                }
-                .launchIn(viewLifecycleOwner.lifecycleScope)
+            observeLocationChanges()
         }
     }
 
@@ -69,59 +57,32 @@ class MapFragment: Fragment() {
             .root
     }
 
-    @SuppressLint("MissingPermission", "PotentialBehaviorOverride")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 
-        binding.fragmentMap.getMapAsync { map ->
-            googleMap = map.apply {
+        initGoogleMap { map ->
+            viewModel
+                .lceFlow
+                .onEach { cities ->
+                    cities.forEach { city ->
+                        val marker = map.addMarker(
+                            MarkerOptions()
+                                .draggable(false)
+                                .position(LatLng(city.latitude, city.longitude))
+                                .title(city.name)
+                        )
 
-                initMapStyle()
-
-                uiSettings.isCompassEnabled = true
-                uiSettings.isZoomControlsEnabled = true
-                uiSettings.isMyLocationButtonEnabled = true
-
-                isMyLocationEnabled = hasLocationPermission()
-
-                setLocationSource(object : LocationSource {
-                    override fun activate(listener: LocationSource.OnLocationChangedListener) {
-                        locationListener = listener
+                        marker?.tag = city
                     }
-
-                    override fun deactivate() {
-                        locationListener = null
-                    }
-                })
-            }
+                }
+                .launchIn(viewLifecycleOwner.lifecycleScope)
         }
 
         binding.fragmentMap.onCreate(savedInstanceState)
 
         viewModel.databaseFlow.tryEmit(Unit)
-
-        viewModel
-            .lceFlow
-            .onEach {
-                it.forEach { city ->
-                    binding.fragmentMap.getMapAsync { map ->
-                        val marker = map.addMarker(MarkerOptions()
-                            .draggable(false)
-                            .position(LatLng(city.latitude, city.longitude))
-                            .title(city.name))
-
-                        marker?.tag = city
-
-                        map.setOnMarkerClickListener { settedMarker ->
-                            findNavController().navigate(MapFragmentDirections.actionFragmentMapToFragmentWeatherInfo(settedMarker.tag as City))
-                            true
-                        }
-                    }
-                }
-            }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     override fun onResume() {
@@ -146,10 +107,67 @@ class MapFragment: Fragment() {
         _binding = null
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
+    private fun initGoogleMap(action: (GoogleMap) -> Unit) {
+        binding.fragmentMap.getMapAsync { map ->
+            googleMap = map.apply {
+                initMapStyle()
+
+                uiSettings.isCompassEnabled = true
+                uiSettings.isZoomControlsEnabled = true
+
+                setLocationSource(object : LocationSource {
+                    override fun activate(listener: LocationSource.OnLocationChangedListener) {
+                        locationListener = listener
+                    }
+
+                    override fun deactivate() {
+                        locationListener = null
+                    }
+                })
+
+                map.setOnMarkerClickListener { settedMarker ->
+                    findNavController().navigate(
+                        MapFragmentDirections.actionFragmentMapToFragmentWeatherInfo(
+                            settedMarker.tag as City
+                        )
+                    )
+                    true
+                }
+            }
+
+            val hasLocationPermission =
+                hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            setLocationEnabled(hasLocationPermission)
+
+            if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                observeLocationChanges()
+            } else {
+                permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+
+            action(map)
+        }
+    }
+
     @SuppressLint("MissingPermission")
     private fun setLocationEnabled(enabled: Boolean) {
         googleMap?.isMyLocationEnabled = enabled
         googleMap?.uiSettings?.isMyLocationButtonEnabled = enabled
+    }
+
+    private fun observeLocationChanges() {
+        viewModel
+            .startLocationFlow
+            .onEach(::moveCameraToLocation)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel
+            .locationFlow
+            .onEach {
+                locationListener?.onLocationChanged(it)
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun moveCameraToLocation(location: Location) {
@@ -159,10 +177,10 @@ class MapFragment: Fragment() {
         )
     }
 
-    private fun hasLocationPermission(): Boolean {
+    private fun hasPermission(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION
+            permission
         ) == PackageManager.PERMISSION_GRANTED
     }
 
