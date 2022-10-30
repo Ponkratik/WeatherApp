@@ -15,10 +15,8 @@ import com.ponkratov.weatherapp.databinding.FragmentCitiesListBinding
 import com.ponkratov.weatherapp.domain.model.Lce
 import com.ponkratov.weatherapp.presentation.extension.addVerticalSpace
 import com.ponkratov.weatherapp.presentation.ui.findcity.adapter.CitiesListAdapter
-import com.ponkratov.weatherapp.presentation.ui.weatherinfo.WeatherInfoViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CitiesListFragment : Fragment() {
@@ -27,16 +25,13 @@ class CitiesListFragment : Fragment() {
 
     private val viewModel by viewModel<CitiesListViewModel>()
 
-    private val weatherInfoViewModel by sharedViewModel<WeatherInfoViewModel>()
-
     //решить косяк с отображением того, что есть в бд без флажка
 
     private val adapter by lazy {
         CitiesListAdapter(
             context = requireContext(),
             onItemCityClicked = {
-                weatherInfoViewModel.cityFlow.tryEmit(it)
-                findNavController().navigate(R.id.action_fragment_cities_list_to_fragment_weather_info)
+                findNavController().navigate(CitiesListFragmentDirections.actionFragmentCitiesListToFragmentWeatherInfo(it))
             },
             checkedInitialState = false,
             onItemFavoriteCheckedChangedListener = { city, checked ->

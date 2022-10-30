@@ -8,14 +8,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.ponkratov.weatherapp.R
 import com.ponkratov.weatherapp.databinding.FragmentFavoritesListBinding
 import com.ponkratov.weatherapp.presentation.extension.addVerticalSpace
 import com.ponkratov.weatherapp.presentation.ui.findcity.adapter.CitiesListAdapter
-import com.ponkratov.weatherapp.presentation.ui.weatherinfo.WeatherInfoViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesListFragment : Fragment() {
@@ -24,14 +21,11 @@ class FavoritesListFragment : Fragment() {
 
     private val viewModel by viewModel<FavoritesListViewModel>()
 
-    private val weatherInfoViewModel by sharedViewModel<WeatherInfoViewModel>()
-
     private val adapter by lazy {
         CitiesListAdapter(
             context = requireContext(),
             onItemCityClicked = {
-                weatherInfoViewModel.cityFlow.tryEmit(it)
-                findNavController().navigate(R.id.action_fragment_favorites_list_to_fragment_weather_info)
+                findNavController().navigate(FavoritesListFragmentDirections.actionFragmentFavoritesListToFragmentWeatherInfo(it))
             },
             checkedInitialState = true,
             onItemFavoriteCheckedChangedListener = { city, checked ->

@@ -10,7 +10,11 @@
         tools:layout="@layout/fragment_favorites_list" >
         <action
             android:id="@+id/action_fragment_favorites_list_to_fragment_weather_info"
-            app:destination="@id/fragment_weather_info" />
+            app:destination="@id/fragment_weather_info"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -19,7 +23,11 @@
         tools:layout="@layout/fragment_cities_list" >
         <action
             android:id="@+id/action_fragment_cities_list_to_fragment_weather_info"
-            app:destination="@id/fragment_weather_info" />
+            app:destination="@id/fragment_weather_info"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -30,7 +38,12 @@
     <fragment
         android:id="@+id/fragment_weather_info"
         android:name="com.ponkratov.weatherapp.presentation.ui.weatherinfo.WeatherInfoFragment"
-        tools:layout="@layout/fragment_weather_info" />
+        tools:layout="@layout/fragment_weather_info">
+
+        <argument
+            android:name="city"
+            app:argType="com.ponkratov.weatherapp.domain.model.City" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_map"
@@ -38,7 +51,11 @@
         tools:layout="@layout/fragment_map" >
         <action
             android:id="@+id/action_fragment_map_to_fragment_weather_info"
-            app:destination="@id/fragment_weather_info" />
+            app:destination="@id/fragment_weather_info"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
 </navigation>

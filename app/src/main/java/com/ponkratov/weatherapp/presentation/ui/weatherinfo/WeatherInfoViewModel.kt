@@ -1,28 +1,18 @@
 package com.ponkratov.weatherapp.presentation.ui.weatherinfo
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ponkratov.weatherapp.domain.model.City
 import com.ponkratov.weatherapp.domain.model.Weather
 import com.ponkratov.weatherapp.domain.usecase.GetWeatherUseCase
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 
 class WeatherInfoViewModel(
-    private val getWeatherUseCase: GetWeatherUseCase
+    private val getWeatherUseCase: GetWeatherUseCase,
+    private val city: City
 ) : ViewModel() {
 
-    val cityFlow = MutableStateFlow(City(
-        2950159,
-        "Berlin",
-        "Germany",
-        "DE",
-        52.52437,
-        13.41053,
-        74,
-        "Europe/Berlin"
-    ))
+    private val cityFlow = MutableStateFlow(city)
 
     private var isLoading = false
 

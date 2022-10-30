@@ -18,18 +18,13 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.LocationSource
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.maps.android.ktx.addMarker
-import com.google.maps.android.ktx.awaitMapLoad
 import com.ponkratov.weatherapp.R
 import com.ponkratov.weatherapp.databinding.FragmentMapBinding
 import com.ponkratov.weatherapp.domain.model.City
-import com.ponkratov.weatherapp.presentation.ui.weatherinfo.WeatherInfoViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment: Fragment() {
@@ -63,8 +58,6 @@ class MapFragment: Fragment() {
     }
 
     private val viewModel by viewModel<MapViewModel>()
-
-    private val weatherInfoViewModel by sharedViewModel<WeatherInfoViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -111,7 +104,7 @@ class MapFragment: Fragment() {
 
         viewModel
             .lceFlow
-            .onEach { it ->
+            .onEach {
                 it.forEach { city ->
                     binding.fragmentMap.getMapAsync { map ->
                         val marker = map.addMarker(MarkerOptions()
@@ -122,8 +115,7 @@ class MapFragment: Fragment() {
                         marker?.tag = city
 
                         map.setOnMarkerClickListener { settedMarker ->
-                            weatherInfoViewModel.cityFlow.tryEmit(settedMarker.tag as City)
-                            findNavController().navigate(R.id.action_fragment_map_to_fragment_weather_info)
+                            findNavController().navigate(MapFragmentDirections.actionFragmentMapToFragmentWeatherInfo(settedMarker.tag as City))
                             true
                         }
                     }
