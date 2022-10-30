@@ -56,10 +56,13 @@ class CitiesListFragment : Fragment() {
         with(binding) {
             citiesRecyclerView.addVerticalSpace()
             citiesRecyclerView.adapter = adapter
-            textSearch.setText("")
 
             textSearch.addTextChangedListener {
-                viewModel.onQueryTextChanged(textSearch.text.toString())
+                if (it.toString().length >= 2) {
+                    viewModel.onQueryTextChanged(textSearch.text.toString())
+                } else {
+                    adapter.submitList(emptyList())
+                }
             }
 
             viewModel

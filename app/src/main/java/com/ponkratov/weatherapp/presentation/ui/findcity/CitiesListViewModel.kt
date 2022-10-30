@@ -23,9 +23,7 @@ class CitiesListViewModel(
     private val queryFlow = MutableStateFlow("")
 
     val lceFlow = queryFlow
-        .map {
-            Lce.Loading
-        }
+        .debounce(500)
         .flatMapLatest { networkFlow(queryFlow.value) }
         .shareIn(
             scope = viewModelScope,
@@ -33,13 +31,11 @@ class CitiesListViewModel(
             replay = 1
         )
 
-    init {
-        queryFlow.tryEmit("")
-    }
-
     private fun networkFlow(query: String): Flow<Lce<List<City>>> {
-        return networkFlow
-            .onStart { emit(Unit) }
+        return queryFlow
+            .map {
+                Lce.Loading
+            }
             .map {
                 getCitiesUseCase(query)
                     .fold(
@@ -51,7 +47,6 @@ class CitiesListViewModel(
 
     fun onQueryTextChanged(query: String) {
         queryFlow.tryEmit(query)
-
     }
 
     fun onCheckboxFavoritesCheckedChanged(item: City, checked: Boolean) {
