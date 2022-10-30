@@ -13,7 +13,7 @@ class SettingsViewModel(
     private val setThemeCodeUseCase: SetThemeCodeUseCase,
     private val getLanguageCodeUseCase: GetLanguageCodeUseCase,
     private val setLanguageCodeUseCase: SetLanguageCodeUseCase
-): ViewModel() {
+) : ViewModel() {
 
     fun onInitGetTheme(): ThemeCode = getThemeCodeUseCase()
     fun onInitGetLanguage(): LanguageCode = getLanguageCodeUseCase()

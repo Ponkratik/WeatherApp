@@ -18,13 +18,10 @@ class SettingsFragment : Fragment() {
     private val viewModel by viewModel<SettingsViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         return FragmentSettingsBinding.inflate(inflater, container, false)
-            .also { _binding = it }
-            .root
+            .also { _binding = it }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,58 +29,43 @@ class SettingsFragment : Fragment() {
 
         with(binding) {
             when (viewModel.onInitGetTheme()) {
-                ThemeCode.THEME_CODE_DAY -> {
-                    radioNightmodeOff.isChecked = true
-                }
-                ThemeCode.THEME_CODE_NIGHT -> {
-                    radioNightmodeOn.isChecked = true
-                }
-                else -> {
-                    radioNightmodeSystem.isChecked = true
-                }
-            }
+                ThemeCode.THEME_CODE_DAY -> radioNightmodeOff
+                ThemeCode.THEME_CODE_NIGHT -> radioNightmodeOn
+                else -> radioNightmodeSystem
+            }.isChecked = true
 
             when (viewModel.onInitGetLanguage()) {
-                LanguageCode.LANGUAGE_CODE_RU -> {
-                    radioLanguageRu.isChecked = true
-                }
-                else -> {
-                    radioLanguageEn.isChecked = true
+                LanguageCode.LANGUAGE_CODE_RU -> radioLanguageRu
+                else -> radioLanguageEn
+            }.isChecked = true
+
+            radiogroupNightmode.setOnCheckedChangeListener { _, radioId ->
+                when (radioId) {
+                    radioNightmodeOn.id -> {
+                        viewModel.onThemeChecked(ThemeCode.THEME_CODE_NIGHT)
+                        setTheme(ThemeCode.THEME_CODE_NIGHT)
+                    }
+                    radioNightmodeOff.id -> {
+                        viewModel.onThemeChecked(ThemeCode.THEME_CODE_DAY)
+                        setTheme(ThemeCode.THEME_CODE_DAY)
+                    }
+                    radioNightmodeSystem.id -> {
+                        viewModel.onThemeChecked(ThemeCode.THEME_CODE_SYSTEM)
+                        setTheme(ThemeCode.THEME_CODE_SYSTEM)
+                    }
                 }
             }
 
-            radioNightmodeOn.setOnCheckedChangeListener { _, checked ->
-                if (checked) {
-                    viewModel.onThemeChecked(ThemeCode.THEME_CODE_NIGHT)
-                    setTheme(ThemeCode.THEME_CODE_NIGHT)
-                }
-            }
-
-            radioNightmodeOff.setOnCheckedChangeListener { _, checked ->
-                if (checked) {
-                    viewModel.onThemeChecked(ThemeCode.THEME_CODE_DAY)
-                    setTheme(ThemeCode.THEME_CODE_DAY)
-                }
-            }
-
-            radioNightmodeSystem.setOnCheckedChangeListener { _, checked ->
-                if (checked) {
-                    viewModel.onThemeChecked(ThemeCode.THEME_CODE_SYSTEM)
-                    setTheme(ThemeCode.THEME_CODE_SYSTEM)
-                }
-            }
-
-            radioLanguageEn.setOnCheckedChangeListener { _, checked ->
-                if (checked) {
-                    viewModel.onLanguageChecked(LanguageCode.LANGUAGE_CODE_EN)
-                    changeLanguage()
-                }
-            }
-
-            radioLanguageRu.setOnCheckedChangeListener { _, checked ->
-                if (checked) {
-                    viewModel.onLanguageChecked(LanguageCode.LANGUAGE_CODE_RU)
-                    changeLanguage()
+            radiogroupLanguage.setOnCheckedChangeListener { _, radioId ->
+                when (radioId) {
+                    radioLanguageEn.id -> {
+                        viewModel.onLanguageChecked(LanguageCode.LANGUAGE_CODE_EN)
+                        changeLanguage()
+                    }
+                    radioLanguageRu.id -> {
+                        viewModel.onLanguageChecked(LanguageCode.LANGUAGE_CODE_RU)
+                        changeLanguage()
+                    }
                 }
             }
         }
