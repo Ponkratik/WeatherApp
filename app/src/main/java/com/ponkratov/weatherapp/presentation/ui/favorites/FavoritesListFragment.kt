@@ -61,7 +61,7 @@ class FavoritesListFragment : Fragment() {
             })
 
             viewModel
-                .lceFlow
+                .dataFlow
                 .onEach { adapter.submitList(it) }
                 .launchIn(viewLifecycleOwner.lifecycleScope)
         }

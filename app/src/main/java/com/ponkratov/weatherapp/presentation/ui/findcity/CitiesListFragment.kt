@@ -58,11 +58,7 @@ class CitiesListFragment : Fragment() {
             citiesRecyclerView.adapter = adapter
 
             textSearch.addTextChangedListener {
-                if (it.toString().length >= 2) {
-                    viewModel.onQueryTextChanged(textSearch.text.toString())
-                } else {
-                    adapter.submitList(emptyList())
-                }
+                viewModel.onQueryTextChanged(textSearch.text.toString())
             }
 
             viewModel

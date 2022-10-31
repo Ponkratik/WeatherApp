@@ -23,16 +23,24 @@ class CitiesListViewModel(
     private val queryFlow = MutableStateFlow("")
 
     val lceFlow = queryFlow
-        .debounce(500)
-        .flatMapLatest { networkFlow(queryFlow.value) }
+        .debounce(DEBOUNCE)
+        .flatMapLatest {
+            if (it.length < 2) {
+                flowOf(Lce.Content(emptyList()))
+            } else {
+                networkFlow(queryFlow.value)
+            }
+        }
         .shareIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
             replay = 1
         )
 
+
+
     private fun networkFlow(query: String): Flow<Lce<List<City>>> {
-        return queryFlow
+        return networkFlow
             .map {
                 Lce.Loading
             }
@@ -53,5 +61,9 @@ class CitiesListViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             addCityToFavoritesUseCase(item)
         }
+    }
+
+    companion object {
+        private const val DEBOUNCE = 500L
     }
 }

@@ -21,7 +21,7 @@ class FavoritesListViewModel(
         replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
-    val lceFlow = queryFlow
+    val dataFlow = queryFlow
         .flatMapLatest { databaseFlow(queryFlow.value) }
         .shareIn(
             scope = viewModelScope,

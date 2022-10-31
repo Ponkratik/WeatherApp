@@ -4,7 +4,6 @@ import com.ponkratov.weatherapp.data.model.WeatherResponse
 import com.ponkratov.weatherapp.domain.model.Weather
 
 fun WeatherResponse.toDomainList(): List<Weather> {
-    val weatherList = mutableListOf<Weather>()
 
     val maxTempMap =
         findTempPerDays(hourly.time, hourly.temperature2m, true)
@@ -13,18 +12,14 @@ fun WeatherResponse.toDomainList(): List<Weather> {
     val weatherCodeMap =
         findWeatherCodePerDays(hourly.time, hourly.weatherCode)
 
-    maxTempMap.forEach { (date, maxTemp) ->
-        weatherList.add(
-            Weather(
-                date,
-                "${minTempMap[date]} ${hourlyUnits.temperature2m}",
-                "$maxTemp ${hourlyUnits.temperature2m}",
-                weatherCodeMap[date] ?: DEFAULT_WEATHER_CODE
-            )
+    return maxTempMap.map { (date, maxTemp) ->
+        Weather(
+            date,
+            "${minTempMap[date]} ${hourlyUnits.temperature2m}",
+            "$maxTemp ${hourlyUnits.temperature2m}",
+            weatherCodeMap[date] ?: DEFAULT_WEATHER_CODE
         )
     }
-
-    return weatherList
 }
 
 private fun findTempPerDays(
