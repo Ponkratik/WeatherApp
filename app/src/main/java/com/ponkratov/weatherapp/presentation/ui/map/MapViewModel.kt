@@ -5,16 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ponkratov.weatherapp.data.service.LocationService
 import com.ponkratov.weatherapp.domain.model.City
-import com.ponkratov.weatherapp.domain.model.settings.ThemeCode
 import com.ponkratov.weatherapp.domain.usecase.GetFavoritesCitiesUseCase
-import com.ponkratov.weatherapp.domain.usecase.GetThemeCodeUseCase
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 
 class MapViewModel(
     private val locationService: LocationService,
-    private val getFavoritesCitiesUseCase: GetFavoritesCitiesUseCase,
-    private val getThemeCodeUseCase: GetThemeCodeUseCase
+    private val getFavoritesCitiesUseCase: GetFavoritesCitiesUseCase
 ): ViewModel() {
 
     val locationFlow: Flow<Location> by locationService::locationFlow
@@ -45,9 +42,5 @@ class MapViewModel(
             .map {
                 getFavoritesCitiesUseCase()
             }
-    }
-
-    fun isNightMode(): Boolean {
-        return getThemeCodeUseCase() == ThemeCode.THEME_CODE_NIGHT
     }
 }

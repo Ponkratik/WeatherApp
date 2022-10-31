@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -20,12 +21,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.ponkratov.weatherapp.R
-import com.ponkratov.weatherapp.data.service.LocationService
 import com.ponkratov.weatherapp.databinding.FragmentMapBinding
 import com.ponkratov.weatherapp.domain.model.City
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : Fragment() {
@@ -185,7 +184,7 @@ class MapFragment : Fragment() {
     }
 
     private fun GoogleMap.initMapStyle() {
-        if (viewModel.isNightMode()) {
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style_json)
             )

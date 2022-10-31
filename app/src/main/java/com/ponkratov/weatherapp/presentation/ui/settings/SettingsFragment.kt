@@ -28,61 +28,41 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            when (viewModel.onInitGetTheme()) {
+            when (viewModel.currentThemeCode) {
                 ThemeCode.THEME_CODE_DAY -> radioNightmodeOff
                 ThemeCode.THEME_CODE_NIGHT -> radioNightmodeOn
-                else -> radioNightmodeSystem
+                ThemeCode.THEME_CODE_SYSTEM -> radioNightmodeSystem
             }.isChecked = true
 
-            when (viewModel.onInitGetLanguage()) {
+            when (viewModel.currentLanguageCode) {
                 LanguageCode.LANGUAGE_CODE_RU -> radioLanguageRu
-                else -> radioLanguageEn
+                LanguageCode.LANGUAGE_CODE_EN -> radioLanguageEn
             }.isChecked = true
 
             radiogroupNightmode.setOnCheckedChangeListener { _, radioId ->
-                when (radioId) {
-                    radioNightmodeOn.id -> {
-                        viewModel.onThemeChecked(ThemeCode.THEME_CODE_NIGHT)
-                        setTheme(ThemeCode.THEME_CODE_NIGHT)
-                    }
-                    radioNightmodeOff.id -> {
-                        viewModel.onThemeChecked(ThemeCode.THEME_CODE_DAY)
-                        setTheme(ThemeCode.THEME_CODE_DAY)
-                    }
-                    radioNightmodeSystem.id -> {
-                        viewModel.onThemeChecked(ThemeCode.THEME_CODE_SYSTEM)
-                        setTheme(ThemeCode.THEME_CODE_SYSTEM)
-                    }
+                val (prefsCode, systemCode) = when (radioId) {
+                    radioNightmodeOn.id -> ThemeCode.THEME_CODE_NIGHT to AppCompatDelegate.MODE_NIGHT_YES
+                    radioNightmodeOff.id -> ThemeCode.THEME_CODE_DAY to AppCompatDelegate.MODE_NIGHT_NO
+                    radioNightmodeSystem.id -> ThemeCode.THEME_CODE_SYSTEM to AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                    else -> ThemeCode.THEME_CODE_SYSTEM to AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                 }
+
+                viewModel.currentThemeCode = prefsCode
+                AppCompatDelegate.setDefaultNightMode(systemCode)
             }
 
             radiogroupLanguage.setOnCheckedChangeListener { _, radioId ->
-                when (radioId) {
-                    radioLanguageEn.id -> {
-                        viewModel.onLanguageChecked(LanguageCode.LANGUAGE_CODE_EN)
-                        changeLanguage()
-                    }
-                    radioLanguageRu.id -> {
-                        viewModel.onLanguageChecked(LanguageCode.LANGUAGE_CODE_RU)
-                        changeLanguage()
-                    }
+                val languageCode = when (radioId) {
+                    radioLanguageEn.id -> LanguageCode.LANGUAGE_CODE_EN
+                    radioLanguageRu.id -> LanguageCode.LANGUAGE_CODE_RU
+                    else -> LanguageCode.LANGUAGE_CODE_DEFAULT
                 }
+
+                viewModel.currentLanguageCode = languageCode
+
+                activity?.recreate()
             }
         }
-    }
-
-    private fun changeLanguage() {
-        requireActivity().recreate()
-    }
-
-    private fun setTheme(themeCode: ThemeCode) {
-        AppCompatDelegate.setDefaultNightMode(
-            when (themeCode) {
-                ThemeCode.THEME_CODE_DAY -> AppCompatDelegate.MODE_NIGHT_NO
-                ThemeCode.THEME_CODE_NIGHT -> AppCompatDelegate.MODE_NIGHT_YES
-                ThemeCode.THEME_CODE_SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            }
-        )
     }
 
     override fun onDestroyView() {
