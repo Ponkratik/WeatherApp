@@ -17,16 +17,12 @@ class PreferencesService(context: Context) : ThemeService, LanguageService {
     override var themeCode: ThemeCode by PreferencesDelegate(
         sharedPrefs,
         getValue = {
-            getString(THEME_KEY, null)
-                ?.let {
-                    when (it) {
-                        ThemeCode.THEME_CODE_NIGHT.themeCode -> ThemeCode.THEME_CODE_NIGHT
-                        ThemeCode.THEME_CODE_DAY.themeCode -> ThemeCode.THEME_CODE_DAY
-                        ThemeCode.THEME_CODE_SYSTEM.themeCode -> ThemeCode.THEME_CODE_SYSTEM
-                        else -> ThemeCode.THEME_CODE_DEFAULT
-                    }
-                }
-                ?: ThemeCode.THEME_CODE_DEFAULT
+            when (getString(THEME_KEY, null)) {
+                ThemeCode.THEME_CODE_NIGHT.themeCode -> ThemeCode.THEME_CODE_NIGHT
+                ThemeCode.THEME_CODE_DAY.themeCode -> ThemeCode.THEME_CODE_DAY
+                ThemeCode.THEME_CODE_SYSTEM.themeCode -> ThemeCode.THEME_CODE_SYSTEM
+                else -> ThemeCode.THEME_CODE_DEFAULT
+            }
         },
         setValue = {
             putString(LANGUAGE_KEY, it.themeCode)
@@ -36,15 +32,11 @@ class PreferencesService(context: Context) : ThemeService, LanguageService {
     override var language: LanguageCode by PreferencesDelegate(
         sharedPrefs,
         getValue = {
-            getString(LANGUAGE_KEY, null)
-                ?.let {
-                    when (it) {
-                        LANGUAGE_RU_CODE -> LanguageCode.LANGUAGE_CODE_RU
-                        LANGUAGE_EN_CODE -> LanguageCode.LANGUAGE_CODE_EN
-                        else -> LanguageCode.LANGUAGE_CODE_DEFAULT
-                    }
-                }
-                ?: LanguageCode.LANGUAGE_CODE_DEFAULT
+            when (getString(LANGUAGE_KEY, null)) {
+                LANGUAGE_RU_CODE -> LanguageCode.LANGUAGE_CODE_RU
+                LANGUAGE_EN_CODE -> LanguageCode.LANGUAGE_CODE_EN
+                else -> LanguageCode.LANGUAGE_CODE_DEFAULT
+            }
         },
         setValue = {
             val languageCodeText = when (it) {
