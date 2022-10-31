@@ -2,8 +2,11 @@ package com.ponkratov.weatherapp.data.mapper
 
 import com.ponkratov.weatherapp.data.model.WeatherResponse
 import com.ponkratov.weatherapp.domain.model.Weather
+import com.ponkratov.weatherapp.domain.model.WeatherUI
+import java.text.SimpleDateFormat
+import java.util.*
 
-fun WeatherResponse.toDomainList(): List<Weather> {
+fun WeatherResponse.toDomainList(): WeatherUI {
 
     val maxTempMap =
         findTempPerDays(hourly.time, hourly.temperature2m, true)
@@ -12,14 +15,21 @@ fun WeatherResponse.toDomainList(): List<Weather> {
     val weatherCodeMap =
         findWeatherCodePerDays(hourly.time, hourly.weatherCode)
 
-    return maxTempMap.map { (date, maxTemp) ->
-        Weather(
-            date,
-            "${minTempMap[date]} ${hourlyUnits.temperature2m}",
-            "$maxTemp ${hourlyUnits.temperature2m}",
-            weatherCodeMap[date] ?: DEFAULT_WEATHER_CODE
-        )
-    }
+    val sdf = SimpleDateFormat("yyyy-MM-dd hh:", Locale.US)
+    val currentDate = sdf.format(Date()).replace(' ', 'T') + "00"
+    val currentTemp = hourly.temperature2m[hourly.time.indexOf(currentDate)]
+
+    return WeatherUI(
+        maxTempMap.map { (date, maxTemp) ->
+            Weather(
+                date,
+                "${minTempMap[date]} ${hourlyUnits.temperature2m}",
+                "$maxTemp ${hourlyUnits.temperature2m}",
+                weatherCodeMap[date] ?: DEFAULT_WEATHER_CODE
+            )
+        },
+        "$currentTemp ${hourlyUnits.temperature2m}"
+    )
 }
 
 private fun findTempPerDays(

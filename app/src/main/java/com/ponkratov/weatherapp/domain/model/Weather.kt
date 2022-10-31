@@ -1,7 +1,5 @@
 package com.ponkratov.weatherapp.domain.model
 
-import java.time.DayOfWeek
-
 data class Weather(
     var date: String,
     var minTemp: String,

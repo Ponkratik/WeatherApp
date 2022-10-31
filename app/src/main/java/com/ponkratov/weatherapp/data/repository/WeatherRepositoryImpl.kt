@@ -2,7 +2,7 @@ package com.ponkratov.weatherapp.data.repository
 
 import com.ponkratov.weatherapp.data.api.WeatherApi
 import com.ponkratov.weatherapp.data.mapper.toDomainList
-import com.ponkratov.weatherapp.domain.model.Weather
+import com.ponkratov.weatherapp.domain.model.WeatherUI
 import com.ponkratov.weatherapp.domain.repository.WeatherRepository
 
 class WeatherRepositoryImpl(
@@ -11,7 +11,7 @@ class WeatherRepositoryImpl(
     override suspend fun getWeatherRemote(
         latitude: Double,
         longitude: Double
-    ): Result<List<Weather>> = runCatching {
+    ): Result<WeatherUI> = runCatching {
         weatherApi.getWeather(latitude, longitude).toDomainList()
     }
 }

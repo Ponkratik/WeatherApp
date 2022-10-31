@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ponkratov.weatherapp.domain.model.City
 import com.ponkratov.weatherapp.domain.model.Weather
+import com.ponkratov.weatherapp.domain.model.WeatherUI
 import com.ponkratov.weatherapp.domain.usecase.GetWeatherUseCase
 import kotlinx.coroutines.flow.*
 
@@ -29,7 +30,7 @@ class WeatherInfoViewModel(
             replay = 1
         )
 
-    private fun networkFlow(latitude: Double, longitude: Double): Flow<List<Weather>> {
+    private fun networkFlow(latitude: Double, longitude: Double): Flow<WeatherUI> {
         return cityFlow
             .filter { !isLoading }
             .onEach { isLoading = true }
@@ -37,7 +38,7 @@ class WeatherInfoViewModel(
                 getWeatherUseCase(latitude, longitude)
                     .fold(
                         onSuccess = { it },
-                        onFailure = { emptyList() }
+                        onFailure = { WeatherUI(emptyList(), "") }
                     )
             }
             .onEach {
