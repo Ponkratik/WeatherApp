@@ -25,7 +25,7 @@ class CitiesListViewModel(
     val lceFlow = queryFlow
         .debounce(DEBOUNCE)
         .flatMapLatest {
-            if (it.length < 2) {
+            if (it.length < MIN_QUERY_LENGTH) {
                 flowOf(Lce.Content(emptyList()))
             } else {
                 networkFlow(queryFlow.value)
@@ -36,8 +36,6 @@ class CitiesListViewModel(
             started = SharingStarted.Lazily,
             replay = 1
         )
-
-
 
     private fun networkFlow(query: String): Flow<Lce<List<City>>> {
         return networkFlow
@@ -65,5 +63,6 @@ class CitiesListViewModel(
 
     companion object {
         private const val DEBOUNCE = 500L
+        private const val MIN_QUERY_LENGTH = 2
     }
 }

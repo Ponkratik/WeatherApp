@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/fragment_favorites_list"
+        android:id="@+id/navigation_favorites_list"
         android:icon="@drawable/ic_favorites"
         android:title="@string/bottom_nav_favorites" />
 
     <item
-        android:id="@+id/fragment_cities_list"
+        android:id="@+id/navigation_cities_list"
         android:icon="@drawable/ic_search"
         android:title="@string/bottom_nav_search" />
 
     <item
-        android:id="@+id/fragment_settings"
+        android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/bottom_nav_settings" />
 
     <item
-        android:id="@+id/fragment_map"
+        android:id="@+id/navigation_map"
         android:icon="@drawable/ic_map"
         android:title="@string/bottom_nav_map" />
 

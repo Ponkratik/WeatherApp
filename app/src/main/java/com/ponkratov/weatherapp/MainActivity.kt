@@ -28,19 +28,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         initialNightMode()
-
-        val nestedController =
-            (supportFragmentManager.findFragmentById(R.id.page_container) as NavHostFragment)
-                .navController
-        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        navView.setupWithNavController(nestedController)
-
-        nestedController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.fragment_weather_info -> navView.isVisible = false
-                else -> navView.isVisible = true
-            }
-        }
     }
 
     private fun initialNightMode() {
