@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Погода</string>
+    <string name="cities_list_search_hint">Введите название города для поиска</string>
+    <string name="favorites_icon_description">Избранное</string>
+    <string name="bottom_nav_favorites">Избранное</string>
+    <string name="bottom_nav_search">Поиск</string>
+    <string name="bottom_nav_settings">Настройки</string>
+    <string name="weather_temp_divider">/</string>
+    <string name="arrow_back_description">Назад</string>
+    <string name="text_night_mode">Тема</string>
+    <string name="text_nightmode_on">Темная</string>
+    <string name="text_nightmode_system">Системная</string>
+    <string name="text_nightmode_off">Светлая</string>
+    <string name="text_language">Язык</string>
+    <string name="text_language_ru">Русский</string>
+    <string name="text_language_en">English</string>
+    <string name="day_monday">Понедельник</string>
+    <string name="day_tuesday">Вторник</string>
+    <string name="day_wednesday">Среда</string>
+    <string name="day_thursday">Четверг</string>
+    <string name="day_friday">Пятница</string>
+    <string name="day_saturday">Суббота</string>
+    <string name="day_sunday">Воскресенье</string>
+    <string name="bottom_nav_map">Карта</string>
+    <string name="error_loading_text">Ошибка при загрузке данных</string>
+</resources>

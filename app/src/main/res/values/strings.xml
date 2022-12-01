@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="cities_list_search_hint">Enter city to search a weather</string>
+    <string name="favorites_icon_description">Favorites icon</string>
+    <string name="bottom_nav_favorites">Favorites</string>
+    <string name="bottom_nav_search">Find city</string>
+    <string name="bottom_nav_settings">Settings</string>
+    <string name="bottom_nav_map">Map</string>
+    <string name="weather_temp_divider">/</string>
+    <string name="arrow_back_description">Back</string>
+    <string name="text_night_mode">Night mode</string>
+    <string name="text_nightmode_on">On</string>
+    <string name="text_nightmode_system">System</string>
+    <string name="text_nightmode_off">Off</string>
+    <string name="text_language">Language</string>
+    <string name="text_language_ru">Русский</string>
+    <string name="text_language_en">English</string>
+    <string name="day_monday">Monday</string>
+    <string name="day_tuesday">Tuesday</string>
+    <string name="day_wednesday">Wednesday</string>
+    <string name="day_thursday">Thursday</string>
+    <string name="day_friday">Friday</string>
+    <string name="day_saturday">Saturday</string>
+    <string name="day_sunday">Sunday</string>
+    <string name="error_loading_text">Error while loading data</string>
 </resources>
